@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
 
-  String _selectedRole = 'user'; // افتراضيًا المستخدم العادي
+  String _selectedRole = 'user';
   bool _loading = false;
 
   final _auth = FirebaseAuth.instance;
@@ -27,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _register() async {
     setState(() => _loading = true);
     try {
-      UserCredential cred = await _auth.createUserWithEmailAndPassword(
+      final cred = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final userModel = UserModel(
         uid: cred.user!.uid,
         email: _emailController.text.trim(),
-        role: _selectedRole,
+        role: _selectedRole, // defaults to 'user'
         name: _nameController.text.trim(),
       );
 
@@ -44,67 +44,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .doc(userModel.uid)
           .set(userModel.toMap());
 
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('تم التسجيل بنجاح ✅')));
-      }
-
-      Navigator.pop(context); // يرجع لصفحة تسجيل الدخول
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Account created successfully')),
+      );
+      Navigator.pop(context); // back to login
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('خطأ في التسجيل: $e')));
+      ).showSnackBar(SnackBar(content: Text('Registration failed: $e')));
     } finally {
-      setState(() => _loading = false);
+      if (mounted) setState(() => _loading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('إنشاء حساب جديد')),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CustomTextField(controller: _nameController, hintText: 'الاسم'),
-              CustomTextField(
-                controller: _emailController,
-                hintText: 'الإيميل',
-              ),
-              CustomTextField(
-                controller: _passwordController,
-                hintText: 'كلمة المرور',
-                obscure: true,
-              ),
-
-              const SizedBox(height: 10),
-
-              // اختيار الدور
-              DropdownButtonFormField<String>(
-                value: _selectedRole,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'الدور',
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [theme.colorScheme.primary.withOpacity(0.08), Colors.white],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 480),
+          child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 8),
+                    Text(
+                      'Create your account',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    CustomTextField(
+                      controller: _nameController,
+                      hintText: 'Full Name',
+                    ),
+                    CustomTextField(
+                      controller: _emailController,
+                      hintText: 'Email',
+                    ),
+                    CustomTextField(
+                      controller: _passwordController,
+                      hintText: 'Password',
+                      obscure: true,
+                    ),
+                    const SizedBox(height: 20),
+                    _loading
+                        ? const Center(child: CircularProgressIndicator())
+                        : CustomButton(
+                            text: 'Create account',
+                            onPressed: _register,
+                          ),
+                  ],
                 ),
-                items: const [
-                  DropdownMenuItem(value: 'user', child: Text('مستخدم')),
-                  DropdownMenuItem(value: 'admin', child: Text('مدير')),
-                ],
-                onChanged: (val) {
-                  if (val != null) setState(() => _selectedRole = val);
-                },
               ),
-
-              const SizedBox(height: 20),
-
-              _loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : CustomButton(text: 'تسجيل', onPressed: _register),
-            ],
+            ),
           ),
         ),
       ),

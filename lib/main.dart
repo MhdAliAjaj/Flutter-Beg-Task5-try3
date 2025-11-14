@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './core/firebase/firebase_options.dart';
 import './routes/app_routes.dart'; // ✅ هنا التصحيح
-import './auth/login_screen.dart';
-import './auth/register_screen.dart';
-import './home/user_dashboard.dart';
-import './admin/admin_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

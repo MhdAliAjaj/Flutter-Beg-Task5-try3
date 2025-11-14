@@ -13,6 +13,55 @@ class EditPropertyScreen extends StatefulWidget {
   State<EditPropertyScreen> createState() => _EditPropertyScreenState();
 }
 
+class _SmallScreenNotice extends StatelessWidget {
+  const _SmallScreenNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.desktop_windows,
+                size: 72,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'This admin page is best on larger screens',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Please use a tablet or desktop (≥ 600px width).',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey[700],
+                ),
+              ),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: () => Navigator.maybePop(context),
+                icon: const Icon(Icons.arrow_back),
+                label: const Text('Go Back'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _EditPropertyScreenState extends State<EditPropertyScreen> {
   final _formKey = GlobalKey<FormState>();
   final PropertyService _propertyService = PropertyService();
@@ -64,6 +113,13 @@ class _EditPropertyScreenState extends State<EditPropertyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width < 600) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Edit Property')),
+        body: const _SmallScreenNotice(),
+      );
+    }
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Property')),
       body: Padding(

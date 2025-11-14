@@ -33,7 +33,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
     setState(() => isLoading = true);
 
-    final favoriteIds = await _favoriteService.getFavorites(_user!.uid);
+    final favoriteIds = await _favoriteService.getFavorites(_user.uid);
     final allProperties = await _propertyService.getAllProperties();
 
     setState(() {
@@ -46,7 +46,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   Future<void> _removeFavorite(String propertyId) async {
     if (_user == null) return;
-    await _favoriteService.removeFromFavorites(_user!.uid, propertyId);
+    await _favoriteService.removeFromFavorites(_user.uid, propertyId);
     _loadFavorites();
   }
 

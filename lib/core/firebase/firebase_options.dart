@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '568757808004',
     projectId: 'realestateapp-8a09a',
     authDomain: 'realestateapp-8a09a.firebaseapp.com',
-    storageBucket: 'realestateapp-8a09a.firebasestorage.app',
+    storageBucket: 'realestateapp-8a09a.appspot.com',
     measurementId: 'G-Q02E3JW02C',
   );
 
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:568757808004:android:04f21a6b2c40c1c31acbd1',
     messagingSenderId: '568757808004',
     projectId: 'realestateapp-8a09a',
-    storageBucket: 'realestateapp-8a09a.firebasestorage.app',
+    storageBucket: 'realestateapp-8a09a.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:568757808004:ios:7bc00fab0aa8edb21acbd1',
     messagingSenderId: '568757808004',
     projectId: 'realestateapp-8a09a',
-    storageBucket: 'realestateapp-8a09a.firebasestorage.app',
+    storageBucket: 'realestateapp-8a09a.appspot.com',
     iosBundleId: 'com.example.realEstateApp',
   );
 
@@ -72,7 +72,7 @@ class DefaultFirebaseOptions {
     appId: '1:568757808004:ios:7bc00fab0aa8edb21acbd1',
     messagingSenderId: '568757808004',
     projectId: 'realestateapp-8a09a',
-    storageBucket: 'realestateapp-8a09a.firebasestorage.app',
+    storageBucket: 'realestateapp-8a09a.appspot.com',
     iosBundleId: 'com.example.realEstateApp',
   );
 
@@ -82,7 +82,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '568757808004',
     projectId: 'realestateapp-8a09a',
     authDomain: 'realestateapp-8a09a.firebaseapp.com',
-    storageBucket: 'realestateapp-8a09a.firebasestorage.app',
+    storageBucket: 'realestateapp-8a09a.appspot.com',
     measurementId: 'G-Y4EV9PV7EQ',
   );
 }
